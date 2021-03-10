@@ -117,3 +117,23 @@ body {
 .error {
     color: crimson;
 }
+
+.links {
+    margin:5px;
+    text-decoration: none;
+    color:cyan;
+    width:150px;
+    text-align:center;
+
+}
+
+.links:hover {
+    color:rgb(85, 142, 196);
+}
+
+.startScreen {
+    margin:0;
+    font-size: 80px;
+    text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
+        -1px -1px 0 white;
+}

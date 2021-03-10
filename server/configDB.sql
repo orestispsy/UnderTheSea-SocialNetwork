@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS secrets;
 
 CREATE TABLE users (
     id            SERIAL PRIMARY KEY,
@@ -6,5 +7,12 @@ CREATE TABLE users (
     lastname     VARCHAR NOT NULL CHECK (lastname <> ''),
     email         VARCHAR NOT NULL UNIQUE CHECK (email <> ''),
     password_hash VARCHAR NOT NULL CHECK (password_hash <> ''),
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE secrets (
+    id            SERIAL PRIMARY KEY,
+    email         VARCHAR NOT NULL CHECK (email <> ''),
+    secret_code VARCHAR NOT NULL CHECK (secret_code <> ''),
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
