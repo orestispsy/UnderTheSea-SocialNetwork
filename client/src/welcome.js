@@ -1,4 +1,12 @@
+import { HashRouter, Route } from "react-router-dom";
+
 import Registration from "./registration";
+
+import Login from "./login";
+
+import Reset from "./reset";
+
+
 
 export default function Welcome() {
     return (
@@ -8,7 +16,13 @@ export default function Welcome() {
                 Welcome
                 <span>Under the Surface</span>
             </h1>
-            <Registration />
+            <HashRouter>
+                <div>
+                    <Route exact path="/" component={Registration} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/reset/start" component={Reset} />
+                </div>
+            </HashRouter>
         </div>
     );
 }
