@@ -5,6 +5,11 @@ const path = require("path");
 const db = require("./utils/db");
 const ses = require("./ses");
 
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const s3 = require("./s3");
+const { s3Url } = require("./config");
+
 const crs = require("crypto-random-string");
 
 const { hash, compare } = require("./utils/bc");
@@ -19,12 +24,29 @@ app.use(
     })
 );
 
-app.use(express.urlencoded({ extended: false }));
-
 app.use(compression());
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152,
+    },
+});
+
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.get("/welcome", (req, res) => {
@@ -108,54 +130,53 @@ app.get("/reset", (req, res) => {
 
 app.post("/reset/start", (req, res) => {
     console.log("login body", req.body);
-    if (req.body.email) {
-        const { email } = req.body;
-        db.loginCheck(email)
+    if (req.body.emailRes) {
+        const { emailRes } = req.body;
+        db.loginCheck(emailRes)
             .then(({ rows }) => {
                 console.log("here you go", rows);
                 if (rows.length === 0) {
                     res.json({ data: null });
                 }
                 let code=crs({ length: 6})
-                db.addSecretCode(email, code)
+                db.addSecretCode(emailRes, code)
                     .then(({ rows }) => {
                         console.log("add secret code", rows);
                         ses.sendEmail(
-                            email,
-                            code,
-                            "Password Reset Verification"
+                            emailRes, 
+                            `Your Verification Code is: ${code}`,
+                            "Under The Sea - Password Reset Verification" 
                         )
                             .then(() => {
-                               res.json({ step: 2 });
-                                
+                                res.json({ step: 2 });
                             })
                             .catch((err) => console.log(err));
-                         
                     })
                     .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
     } else {
         res.json({ data: null });
-    }
+    }  
 });
 
 app.post("/reset/verify", (req, res) => {
     console.log("verification body", req.body);
     if (req.body.secret && req.body.password) {
-        db.secretCodeCheck()
+         const { secret } = req.body;
+         console.log("the secret is", secret)
+        db.secretCodeCheck(secret)
             .then(({ rows }) => {
                 console.log("here you go", rows);
                 if (rows.length === 0) {
                     res.json({ data: null });
                 }
-                if (req.body.secret == rows[0].secret_code){
-                    
+                if (req.body.secret == rows[0].secret_code) {
                     hash(req.body.password)
                         .then((password_hash) => {
                             db.updatePassword(rows[0].email, password_hash)
-                                .then(() => {
-                                   res.json({ step: 3 });
+                                .then(({ rows }) => {
+                                    res.json({ step: 3 });
                                 })
                                 .catch((err) => {
                                     console.log(err);
@@ -173,6 +194,23 @@ app.post("/reset/verify", (req, res) => {
 });
 
 
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    const { filename } = req.file;
+    console.log(filename)
+    if (req.file) {
+        db.addImage(
+            req.session.userId,s3Url + filename)
+            .then(({ rows }) => {
+                res.json({ data: rows[0] });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    } else {
+         res.json({ data: null });
+    }
+});
+
 app.get("*", function (req, res) {
     // runs if the user goes to any route except /welcome
     if (!req.session.userId) {
@@ -182,6 +220,6 @@ app.get("*", function (req, res) {
     }
 });
 
-let server = app.listen(process.env.PORT || 3001, () =>
+var server = app.listen(process.env.PORT || 3001, () =>
     console.log(`🟢 Listening Port ${server.address().port} ... ~ SocialNetwork ~`)
 );

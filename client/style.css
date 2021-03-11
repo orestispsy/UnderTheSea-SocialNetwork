@@ -8,11 +8,10 @@ body {
     font-family: 'Bangers', cursive;
     letter-spacing: 2px;
     margin:0;
-    padding: 0 10vh 10vh 10vh;
 }
 
 .welcome {
-     display: flex;
+    display: flex;
     flex-direction:column;
     justify-content: center;
     align-items: center;
@@ -131,9 +130,31 @@ body {
     color:rgb(85, 142, 196);
 }
 
-.startScreen {
+.logo {
     margin:0;
     font-size: 80px;
     text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
         -1px -1px 0 white;
+    align-self: flex-start;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width:50px;
+    height:50px;
+    align-self: flex-end;
+}
+
+.startScreen {
+    display: flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.uploader {
+   display: flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: center;
 }
