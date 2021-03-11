@@ -9,17 +9,13 @@ export default class Uploader extends Component {
             file:null
         };
 
-        console.log("props in Uploader: ", props);
+    console.log("PROPS IN UPLOADER", props);
     }
+
 
     componentDidMount() {
         console.log("uploader mounted!");
     }
-
-    // methodInUploader() {
-    //     // console.log('running method in uploader');
-    //     this.props.methodInApp("whoaaaa");
-    // }
 
     handleClick() {
        
@@ -48,34 +44,28 @@ export default class Uploader extends Component {
             {
                 file: e.target.files[0],
             },
-            // this callback runs after setState finishes updating state
-            // because we're logging state here in the callback, this means this
-            // log won't run until state has been updated, ensuring us that
-            // we're seeing the most updated log
             () => console.log("this.state after setState: ", this.state)
         );
     }
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.onFormSubmit}></form>
-                    <span>Firstname</span>
-                    <input
-                        type="file"
-                        name="file"
-                        accept="image/*"
-                        onChange={(e) => this.handleChange(e)}
-                    />
-                    {this.state.error && (
-                        <p className="error">Oups! Something Went Wrong.</p>
-                    )}
-                    <button onClick={() => this.handleClick()}>Submit</button>
-
-                    {/* <h2 onClick={() => this.methodInUploader()}>
-                    Click here to run method in uploader!
-                </h2> */}
-
+            <div className="uploader">
+                <div className="X" onClick={() => this.props.toggleUploader()}>
+                    X
+                </div>
+                <img className="uploader-pic" src={this.props.imageUrl} />
+                <h1>Update Your Image</h1>
+                <input
+                    type="file"
+                    name="file"
+                    accept="image/*"
+                    onChange={(e) => this.handleChange(e)}
+                />
+                {this.state.error && (
+                    <p className="error">Oups! Something Went Wrong.</p>
+                )}
+                <button onClick={() => this.handleClick()}>Submit</button>
             </div>
         );
     }

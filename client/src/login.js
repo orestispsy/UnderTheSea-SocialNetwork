@@ -34,10 +34,6 @@ export default class Login extends React.Component {
             {
                 [e.target.name]: e.target.value,
             },
-            // this callback runs after setState finishes updating state
-            // because we're logging state here in the callback, this means this
-            // log won't run until state has been updated, ensuring us that
-            // we're seeing the most updated log
             () => console.log("this.state after setState: ", this.state)
         );
     }

@@ -71,3 +71,12 @@ WHERE users.id = $1
     const params = [userId, url];
     return db.query(q, params);
 };
+
+module.exports.getUser = (userId) => {
+    const q = `
+        SELECT * FROM users
+        WHERE id = $1
+    `;
+    const params = [userId];
+    return db.query(q, params);
+};
