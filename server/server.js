@@ -211,6 +211,16 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+app.post("/user", (req, res) => {
+        db.getUser(req.session.userId)
+            .then(({ rows }) => {
+                console.log("GETTING USER ROWS", rows);
+                res.json({ data: rows[0] });
+                
+            })
+            .catch((err) => console.log(err));
+});
+
 app.get("*", function (req, res) {
     // runs if the user goes to any route except /welcome
     if (!req.session.userId) {

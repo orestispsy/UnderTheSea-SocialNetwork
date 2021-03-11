@@ -7,46 +7,52 @@ export default class App extends Component {
     constructor() {
         super();
         this.state = {
-            first: "Layla",
-            last: "Arias",
+            imageUrl: "",
+            firstname: "",
+            lastname: "",
             uploaderIsVisible: false,
         };
     }
 
     componentDidMount() {
-        // console.log('App mounted');
-        // here is where we want to make an axios request to 'get' info about logged in user (first name, last name, and profilePicUrl / imageUrl)
-        // an axios route '/user' is a good path for it
-        // when we have the info from the server, add it to the state of the component (i.e. setState)
+        axios
+            .post("/user", this.state)
+            .then(({ data }) => {
+                console.log("DATA", data);
+                this.setState({
+                    imageUrl: data.data.img_url,
+                    firstname: data.data.firstname,
+                    lastname: data.data.lastname,
+                });
+            })
+            .catch((err) => {
+                console.log("err in axios App User POST Request : ", err);
+            });
     }
 
     toggleUploader() {
-        // console.log('toggleModal function is running!!!');
         this.setState({
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
 
-    methodInApp(arg) {
-        console.log("Im running in App!!! and my argument is: ", arg);
-    }
-
     render() {
         return (
-            <div className="startScreen">
-                <p className="logo">Under The Sea</p>
-                <ProfilePic
-                    first={this.state.first}
-                    last={this.state.last}
-                    imageUrl={this.state.imageUrl}
-                    toggleUploader={() => this.toggleUploader()}
-                />
-               
+            <div className="appContainer">
+                <div className="appBar">
+                    <div className="logo">Under The Sea</div>
+                    <ProfilePic
+                        firstname={this.state.firstname}
+                        lastname={this.state.lastname}
+                        imageUrl={this.state.imageUrl}
+                        toggleUploader={() => this.toggleUploader()}
+                    />
+                </div>
+
                 {this.state.uploaderIsVisible && (
                     <Uploader
-                        methodInApp={this.methodInApp}
-                        // methodInApp={(arg) => this.methodInApp(arg)}
-                        toggleUploader={() => this.Uploader()}
+                        toggleUploader={() => this.toggleUploader()}
+                        imageUrl={this.state.imageUrl}
                     />
                 )}
             </div>
