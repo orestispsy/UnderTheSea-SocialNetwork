@@ -43,13 +43,13 @@ module.exports.addSecretCode = (
     return db.query(q, params);
 };
 
-module.exports.secretCodeCheck = () => {
+module.exports.secretCodeCheck = (secret_code) => {
     const q = `
         SELECT * FROM secrets
-WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '3 minutes';
+WHERE secret_code = $1
     `;
-   
-    return db.query(q);
+    const params = [secret_code];
+    return db.query(q, params);
 };
 
 module.exports.updatePassword= (email, password_hash) => {
@@ -59,5 +59,15 @@ SET password_hash = $2
 WHERE users.email = $1
     `;
     const params = [email, password_hash];
+    return db.query(q, params);
+};
+
+module.exports.addImage = (userId, url) => {
+    const q = `
+        UPDATE users
+SET img_url = $2
+WHERE users.id = $1
+    `;
+    const params = [userId, url];
     return db.query(q, params);
 };

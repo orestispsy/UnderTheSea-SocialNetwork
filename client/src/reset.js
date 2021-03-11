@@ -75,7 +75,7 @@ export default class Reset extends React.Component {
                     <span>Email</span>
                     <input
                         autoComplete="none"
-                        name="email"
+                        name="emailRes"
                         placeholder="Email"
                         onChange={(e) => this.handleChange(e)}
                     />
@@ -112,7 +112,7 @@ export default class Reset extends React.Component {
                     <button onClick={() => this.handleClickVerify()}>
                         Submit
                     </button>
-                    <Link to="/" className="links">
+                    <Link to="/login" className="links">
                         Back
                     </Link>
                 </div>

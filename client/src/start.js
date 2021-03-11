@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
+import App from "./app";
 
 
 let elem;
@@ -8,7 +9,7 @@ if (location.pathname === "/welcome") {
 }
 
 else {
-    elem = <p className="startScreen">Under The Sea</p>;
+    elem = <App />;
 }
 
 ReactDOM.render(elem, document.querySelector("main"));
