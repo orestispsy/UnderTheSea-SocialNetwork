@@ -80,3 +80,14 @@ module.exports.getUser = (userId) => {
     const params = [userId];
     return db.query(q, params);
 };
+
+module.exports.addBio = (userId, bio) => {
+    const q = `
+        UPDATE users
+SET bio = $2
+WHERE users.id = $1
+RETURNING *
+    `;
+    const params = [userId, bio];
+    return db.query(q, params);
+};

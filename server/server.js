@@ -211,14 +211,24 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
-app.post("/user", (req, res) => {
-        db.getUser(req.session.userId)
+app.get("/user", (req, res) => {
+       db.getUser(req.session.userId)
             .then(({ rows }) => {
                 console.log("GETTING USER ROWS", rows);
                 res.json({ data: rows[0] });
                 
             })
             .catch((err) => console.log(err));
+});
+
+app.post("/update-bio", (req, res) => {
+    console.log("REQ BODY UPDATE BIO", req.body) 
+    db.addBio(req.session.userId, req.body.draft)
+        .then(({ rows }) => {
+            console.log(" update bio ROWS", rows);
+            res.json({ data: rows[0] });
+        })
+        .catch((err) => console.log(err));
 });
 
 app.get("*", function (req, res) {
