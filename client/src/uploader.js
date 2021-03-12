@@ -35,7 +35,10 @@ export default class Uploader extends Component {
                 }
             })
             .catch((err) => {
-                console.log("err in axios POST /registration: ", err);
+                this.setState({
+                    error: true,
+                });
+                console.log("err in axios in Image Uploader ", err);
             });
     }
 
