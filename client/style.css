@@ -218,17 +218,39 @@ button:focus {
 
 .profile {
     display:flex;
-    flex-direction:row;
-    justify-content: center;
+    flex-direction:column;
+    justify-content: space-around;
     align-items: center;
     align-self: center;
     background-color: transparent;
     box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
         -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
-        margin-top:10vh;
+    margin-top:10vh;
+    border-radius: 3vh;
+    padding:30px;
+    
 }
 
 textarea {
-    width:300px;
-    height:300px;
+    background-color: transparent;
+    outline: none;
+    font-size: 20px;
+    height:250px;
 }
+
+.bio {
+    padding: 20px;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    padding:20px;
+
+}
+
+.bio h1 { 
+    font-size: 20px;
+    text-align:center;
+}
+

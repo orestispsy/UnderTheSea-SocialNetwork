@@ -12,10 +12,11 @@ export default function Profile({
     bio,
     updateBio
 }) {
-    // console.log('in profilePic: ', toggleUploader);
+    console.log('bio in profile: ', bio);
 
     return (
         <div className="profile">
+            <h1>Welcome, {firstname}</h1>
             <ProfilePic
                 imageUrl={imageUrl}
                 toggleUploader={() => toggleUploader()}

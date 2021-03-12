@@ -7,6 +7,7 @@ export default function ProfilePic ({ firstname, lastname, imageUrl, toggleUploa
     return (
         <div>
             <img
+                alt={`${firstname} ${lastname}`}
                 className={className}
                 src={imageUrl}
                 onClick={() => toggleUploader()}

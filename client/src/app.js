@@ -3,32 +3,40 @@ import axios from "./axios";
 import ProfilePic from "./profilePic";
 import Uploader from "./uploader";
 import Profile from "./profile";
+var synchIt=false;
 
 export default class App extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            imageUrl: "",
-            firstname: "",
-            lastname: "",
-            bio: "",
+            bio:"",
             uploaderIsVisible: false,
             profileIsVisible:true,
             updateBio:false
         };
     }
-
+ 
     componentDidMount() {
         axios
-            .post("/user", this.state)
+            .get("/user")
             .then(({ data }) => {
-                console.log("DATA", data);
-                this.setState({
-                    imageUrl: data.data.img_url,
-                    firstname: data.data.firstname,
-                    lastname: data.data.lastname,
-                    bio: data.data.bio
-                });
+                console.log("DATA In APP", data);
+                if (data) {
+                    synchIt=true;
+                    this.setState(
+                        {
+                            imageUrl: data.data.img_url,
+                            firstname: data.data.firstname,
+                            lastname: data.data.lastname,
+                            bio: data.data.bio,
+                        },
+                        () =>
+                            console.log(
+                                "this.state IN APP after setState: ",
+                                this.state
+                            )
+                    );
+                }
             })
             .catch((err) => {
                 console.log("err in axios App User POST Request : ", err);
@@ -57,7 +65,7 @@ export default class App extends Component {
                         className="profile-pic"
                     />
                 </div>
-                {this.state.profileIsVisible && (
+                {this.state.profileIsVisible && synchIt && (
                     <Profile
                         firstname={this.state.firstname}
                         lastname={this.state.lastname}
