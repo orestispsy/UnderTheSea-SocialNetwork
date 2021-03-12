@@ -115,6 +115,7 @@ button:focus {
 
 .error {
     color: crimson;
+    margin-top:35px;
 }
 
 .links {
@@ -131,25 +132,43 @@ button:focus {
 }
 
 .logo {
-    margin:0;
-    font-size: 80px;
-    text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
-        -1px -1px 0 white;
 
+     font-size: 60px;
+    text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
+        -1px -1px 0 white;    
+}
+
+.logoBack {
+    background-image: url("bubbles.gif");
+    height:55px;
+    background-size:contain;  
 }
 
 .profile-pic {
+    margin:10px;
     border-radius: 50%;
     width:50px;
     height:50px;
+    cursor: pointer; 
+    box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
+        -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
+}
 
-    
+.profile-pic-big {
+    width:300px;
+    height:300px;
+    cursor: pointer; 
+    box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
+        -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
+        border-radius:5vh;
+
 }
 
 .appContainer {
     display:flex;
     flex-direction:column;
     justify-content: center;
+    padding:10px;
 }
 
 .appBar {
@@ -171,6 +190,9 @@ button:focus {
     box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
         -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
     border-radius:20px;
+    margin-top:10vh;
+    text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
+        -1px -1px 0 white;
 }
 
 .X {
@@ -178,6 +200,9 @@ button:focus {
   font-size: 30px;
   margin-right:20px;
   cursor: pointer;
+  color:white;
+  text-shadow: -0 0 5px rgba(0, 0, 0, 0.7), 0 -0 5px rgba(0, 0, 0, 0.7),
+        -0 -0 5px rgba(0, 0, 0, 0.7), -0 -0 5px rgba(0, 0, 0, 0.7);
 }
 
 .X:hover {
@@ -189,4 +214,21 @@ button:focus {
     height:200px;
     box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
         -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
+}
+
+.profile {
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    background-color: transparent;
+    box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
+        -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
+        margin-top:10vh;
+}
+
+textarea {
+    width:300px;
+    height:300px;
 }
