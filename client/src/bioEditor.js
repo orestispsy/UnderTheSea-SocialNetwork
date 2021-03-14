@@ -13,14 +13,13 @@ export default class BioEditor extends Component {
         console.log("DRAFT:", this.state.draft);
     }
 
-    componentDidMount() {
-        this.setState(
-                    {
-                        draft: this.props.bio,
-                    })
-       
-    }
 
+    componentDidMount()  {
+              this.setState({
+                  draft: this.props.bio,
+              });
+              console.log("hello")
+    }
     handleClick() {
         this.setState({
             updateBio: !this.state.updateBio,
@@ -44,6 +43,7 @@ export default class BioEditor extends Component {
                                 this.state
                             )
                     );
+                     this.props.run()
                 }
             })
             .catch((err) => {
@@ -56,15 +56,14 @@ export default class BioEditor extends Component {
 
     handleChange(e) {
         this.setState({
-            draft: e.target.value,
+            draft: e.target.value
         });
     }
 
     render() {
         return (
             <div className="bio">
-                {!this.state.updateBio && <h1>{this.state.draft}</h1>}
-
+                {!this.state.updateBio && <h2>{this.state.draft}</h2>}
                 {this.state.updateBio && (
                     <textarea
                         onChange={(e) => this.handleChange(e)}

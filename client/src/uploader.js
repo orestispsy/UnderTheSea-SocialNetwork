@@ -26,7 +26,7 @@ export default class Uploader extends Component {
             .then(({ data }) => {
                 console.log("DATA", data);
                 if (data) {
-                    location.replace("/");
+                    this.props.run()
                 } else {
                     console.log("data fail");
                     this.setState({
@@ -53,22 +53,30 @@ export default class Uploader extends Component {
 
     render() {
         return (
-            <div className="uploader">
-                <div className="X" onClick={() => this.props.toggleUploader()}>
-                    X
+            <div className="uploaderBack">
+                <h3>Profile Image</h3>
+                <div className="uploader">
+                    <div
+                        className="X"
+                        onClick={() => this.props.toggleUploader()}
+                    >
+                        X
+                    </div>
+                    <img className="uploader-pic" src={this.props.imageUrl} />
+                    <h1>Select New</h1>
+                    <div className="fileUploader">
+                        <input
+                            type="file"
+                            name="file"
+                            accept="image/*"
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                    </div>
+                    {this.state.error && (
+                        <p className="error">Oups! Something Went Wrong.</p>
+                    )}
+                    <button onClick={() => this.handleClick()}>Submit</button>
                 </div>
-                <img className="uploader-pic" src={this.props.imageUrl} />
-                <h1>Update Your Image</h1>
-                <input
-                    type="file"
-                    name="file"
-                    accept="image/*"
-                    onChange={(e) => this.handleChange(e)}
-                />
-                {this.state.error && (
-                    <p className="error">Oups! Something Went Wrong.</p>
-                )}
-                <button onClick={() => this.handleClick()}>Submit</button>
             </div>
         );
     }

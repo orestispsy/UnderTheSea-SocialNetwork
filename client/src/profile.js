@@ -10,19 +10,23 @@ export default function Profile({
     imageUrl,
     toggleUploader,
     bio,
-    updateBio
+    updateBio,
+    run
+
 }) {
-    console.log('bio in profile: ', bio);
 
     return (
-        <div className="profile">
-            <h1>Welcome, {firstname}</h1>
-            <ProfilePic
-                imageUrl={imageUrl}
-                toggleUploader={() => toggleUploader()}
-                className="profile-pic-big"
-            />
-            <BioEditor bio={bio} updateBio={updateBio} />
+        <div className="hello">
+            <div className="bubbles2"></div>
+            Hello, {firstname}
+            <div className="profile">
+                <ProfilePic
+                    imageUrl={imageUrl}
+                    toggleUploader={() => toggleUploader()}
+                    className="profile-pic-big"
+                />
+                <BioEditor bio={bio} updateBio={updateBio} run={run} />
+            </div>
         </div>
     );
 }

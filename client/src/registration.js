@@ -78,7 +78,7 @@ export default class Registration extends React.Component {
                     <p className="error">Oups! Something Went Wrong.</p>
                 )}
                 <button onClick={() => this.handleClick()}>Submit</button>
-                <span >
+                <span className="regSpan">
                     User Already?
                     <Link to="/login" className="links">
                         Login
