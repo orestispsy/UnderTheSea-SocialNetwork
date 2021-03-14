@@ -60,12 +60,14 @@ export default class Login extends React.Component {
                     <p className="error">Oups! Something Went Wrong.</p>
                 )}
                 <button onClick={() => this.handleClick()}>Submit</button>
-                <Link to="/reset/start" className="links">
+               
+                <Link to="/reset/start" className="links" >
                     Reset Password
                 </Link>
                 <Link to="/" className="links">
                     Back
                 </Link>
+               
             </div>
         );
     }

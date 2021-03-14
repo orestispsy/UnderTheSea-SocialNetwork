@@ -211,7 +211,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
-app.get("/user", (req, res) => {
+app.get("/api/user", (req, res) => {
        db.getUser(req.session.userId)
             .then(({ rows }) => {
                 console.log("GETTING USER ROWS", rows);
@@ -219,6 +219,16 @@ app.get("/user", (req, res) => {
                 
             })
             .catch((err) => console.log(err));
+});
+
+app.post("/api/user", (req, res) => {
+    console.log("POST USER BODY", req.body)
+    db.getUser(req.body.id)
+        .then(({ rows }) => {
+            console.log("POST USER ROWS", rows);
+            res.json({ data: rows[0], id: req.session.userId });
+        })
+        .catch((err) => console.log(err));
 });
 
 app.post("/update-bio", (req, res) => {
@@ -230,6 +240,13 @@ app.post("/update-bio", (req, res) => {
         })
         .catch((err) => console.log(err));
 });
+
+app.get("/logout", (req, res) => {
+     req.session = null;
+     res.redirect("/");
+  
+});
+
 
 app.get("*", function (req, res) {
     // runs if the user goes to any route except /welcome
