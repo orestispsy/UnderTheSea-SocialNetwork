@@ -3,8 +3,9 @@ import axios from "./axios";
 import ProfilePic from "./profilePic";
 import Uploader from "./uploader";
 import Profile from "./profile";
-import OtherProfile from "./otherProfile"
-import { BrowserRouter, Route } from "react-router-dom";
+import OtherProfile from "./otherProfile";
+import FindPeople from "./findPeople";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 export default class App extends Component {
     constructor(props) {
@@ -13,7 +14,6 @@ export default class App extends Component {
             bio: "",
             uploaderIsVisible: false,
             profileIsVisible: true,
-            updateBio: false,
             synchIt: false,
         };
     }
@@ -45,7 +45,6 @@ export default class App extends Component {
             });
     }
 
-   
     toggleUploader() {
         this.setState({
             uploaderIsVisible: !this.state.uploaderIsVisible,
@@ -67,60 +66,85 @@ export default class App extends Component {
             });
     }
 
+    picUpdate(arg) {
+        this.setState({
+            imageUrl: arg,
+        });
+    }
+
+    bioUpdate(arg) {
+        this.setState({
+            bio: arg,
+        });
+    }
+
     render() {
         return (
             <BrowserRouter>
                 <div className="appContainer">
                     <div className="appBar">
                         <div className="logo">Under The Surface </div>
-                        <ProfilePic
-                            firstname={this.state.firstname}
-                            lastname={this.state.lastname}
-                            imageUrl={this.state.imageUrl}
-                            toggleUploader={() => this.toggleUploader()}
-                            className="profile-pic"
-                        />
+                        <div className="appBar">
+                            <Link to="/user" className="findPeople">
+                                <div>Find People</div>
+                            </Link>
+                            <Link to="/">
+                                <ProfilePic
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    imageUrl={this.state.imageUrl}
+                                    toggleUploader={() => this.toggleUploader()}
+                                    className="profile-pic"
+                                />
+                            </Link>
+                        </div>
                     </div>
 
-                   {this.state.profileIsVisible && this.state.synchIt && ( <Route
-                        exact
-                        path="/"
-                        render={() => (
-                            <Profile
-                                firstname={this.state.firstname}
-                                lastname={this.state.lastname}
-                                imageUrl={this.state.imageUrl}
-                                bio={this.state.bio}
-                                updateBio={this.state.updateBio}
-                                toggleUploader={() => this.toggleUploader()}
-                                run={() => this.componentDidMount()}
-                                className="profile-pic-big"
-                     
-                            />
-                        )}
-                    />
-                   )}
+                    {this.state.profileIsVisible && this.state.synchIt && (
+                        <Route
+                            exact
+                            path="/"
+                            render={(props) => (
+                                <Profile
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    imageUrl={this.state.imageUrl}
+                                    bio={this.state.bio}
+                                    toggleUploader={() => this.toggleUploader()}
+                                    bioUpdate={(arg) => this.bioUpdate(arg)}
+                                    className="profile-pic-big"
+                                />
+                            )}
+                        />
+                    )}
+                    <Route path="/user/" component={FindPeople} />
+                    {this.state.profileIsVisible && (
+                        <Route
+                            path="/user/:id"
+                            render={(props) => (
+                                <OtherProfile
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                    profileIsVisible={
+                                        this.state.profileIsVisible
+                                    }
+                                />
+                            )}
+                        />
+                    )}
 
-                   <Route path="/user/:id" render={(props) => (
-                       <OtherProfile 
-                            key={props.match.url}
-                            match={props.match}
-                            history={props.history}
-                             />
-                        )}
-                    />
-
-
+                    <div className="logout" onClick={() => this.logOut()}>
+                        <span>logout</span>
+                    </div>
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             toggleUploader={() => this.toggleUploader()}
                             imageUrl={this.state.imageUrl}
-                            run={() => this.componentDidMount()}
+                            picUpdate={(arg) => this.picUpdate(arg)}
+                            uploaderIsVisible={this.state.uploaderIsVisible}
                         />
                     )}
-                    <div className="logout" onClick={() => this.logOut()}>
-                        logout
-                    </div>
                 </div>
             </BrowserRouter>
         );

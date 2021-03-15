@@ -67,6 +67,7 @@ module.exports.addImage = (userId, url) => {
         UPDATE users
 SET img_url = $2
 WHERE users.id = $1
+RETURNING *
     `;
     const params = [userId, url];
     return db.query(q, params);
@@ -90,4 +91,21 @@ RETURNING *
     `;
     const params = [userId, bio];
     return db.query(q, params);
+};
+
+module.exports.getMatchingUsers = (val) => {
+const q = `
+        SELECT * FROM users WHERE firstname ILIKE $1 OR lastname ILIKE $1
+    `;
+    const params = [val + '%'];
+    return db.query(q, params);
+};
+
+module.exports.getLastResults = () => {
+    const q = `
+        SELECT * FROM users
+        ORDER BY id DESC
+        LIMIT 3;
+    `;
+    return db.query(q);
 };

@@ -5,7 +5,7 @@ export default class BioEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            draft: "",
+            draft: null,
            
         };
 
@@ -15,14 +15,13 @@ export default class BioEditor extends Component {
 
 
     componentDidMount()  {
-              this.setState({
-                  draft: this.props.bio,
-              });
-              console.log("hello")
+            this.setState({
+                draft: this.props.bio,
+            });
     }
     handleClick() {
         this.setState({
-            updateBio: !this.state.updateBio,
+            bioCheck: !this.state.bioCheck,
         });
     }
 
@@ -35,7 +34,7 @@ export default class BioEditor extends Component {
                     this.setState(
                         {
                             draft: data.data.bio,
-                            updateBio: false,
+                            bioCheck: false,
                         },
                         () =>
                             console.log(
@@ -43,7 +42,7 @@ export default class BioEditor extends Component {
                                 this.state
                             )
                     );
-                     this.props.run()
+                     this.props.bioUpdate(data.data.bio);
                 }
             })
             .catch((err) => {
@@ -63,20 +62,20 @@ export default class BioEditor extends Component {
     render() {
         return (
             <div className="bio">
-                {!this.state.updateBio && <h2>{this.state.draft}</h2>}
-                {this.state.updateBio && (
+                {!this.state.bioCheck && this.state.draft && (<h2>{this.state.draft}</h2>)}
+                {this.state.bioCheck && (
                     <textarea
                         onChange={(e) => this.handleChange(e)}
                         defaultValue={this.state.draft}
                     ></textarea>
                 )}
-                {this.state.updateBio && (
+                {this.state.bioCheck && (
                     <button onClick={() => this.submitBio()}>Done</button>
                 )}
-                {!this.state.updateBio && !this.state.draft && (
+                {!this.state.bioCheck && !this.state.draft && (
                     <button onClick={() => this.handleClick()}>Add Bio</button>
                 )}
-                {!this.state.updateBio && this.state.draft && (
+                {!this.state.bioCheck && this.state.draft && (
                     <button onClick={() => this.handleClick()}>Edit Bio</button>
                 )}
             </div>

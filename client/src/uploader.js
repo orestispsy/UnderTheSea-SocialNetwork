@@ -26,7 +26,7 @@ export default class Uploader extends Component {
             .then(({ data }) => {
                 console.log("DATA", data);
                 if (data) {
-                    this.props.run()
+                    this.props.picUpdate(data.data.img_url)
                 } else {
                     console.log("data fail");
                     this.setState({
@@ -75,7 +75,11 @@ export default class Uploader extends Component {
                     {this.state.error && (
                         <p className="error">Oups! Something Went Wrong.</p>
                     )}
-                    <button onClick={() => this.handleClick()}>Submit</button>
+                    <button
+                        onClick={(() => this.handleClick())}
+                    >
+                        Submit
+                    </button>
                 </div>
             </div>
         );

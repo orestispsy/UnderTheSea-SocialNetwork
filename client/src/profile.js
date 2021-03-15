@@ -1,7 +1,6 @@
 import ProfilePic from "./profilePic";
 import BioEditor from "./bioEditor";
 
-
 // pass 'props' as an argument to get access to the info being passed down from the parent (App)
 // we can also use destructuring to pull up the properties inside props
 export default function Profile({
@@ -10,8 +9,7 @@ export default function Profile({
     imageUrl,
     toggleUploader,
     bio,
-    updateBio,
-    run
+    bioUpdate
 
 }) {
 
@@ -25,7 +23,10 @@ export default function Profile({
                     toggleUploader={() => toggleUploader()}
                     className="profile-pic-big"
                 />
-                <BioEditor bio={bio} updateBio={updateBio} run={run} />
+                <BioEditor
+                    bio={bio}
+                    bioUpdate={bioUpdate}
+                />
             </div>
         </div>
     );
