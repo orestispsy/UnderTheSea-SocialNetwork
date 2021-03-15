@@ -16,7 +16,6 @@ const { hash, compare } = require("./utils/bc");
 
 const cookieSession = require("cookie-session");
 
-
 app.use(
     cookieSession({
         secret: `Hands 0FF ! This one is #dangerous to taz.`,
@@ -50,7 +49,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.get("/welcome", (req, res) => {
-
     if (req.session.userId) {
         res.redirect("/");
     } else {
@@ -68,28 +66,24 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
     console.log("login body", req.body);
-    if (
-        req.body.email &&
-        req.body.password
-    ) {
+    if (req.body.email && req.body.password) {
         const { email, password } = req.body;
-       db.loginCheck(email)
+        db.loginCheck(email)
             .then(({ rows }) => {
                 console.log("here you go", rows);
                 if (rows.length === 0) {
-                   res.json({ data: null });
+                    res.json({ data: null });
                 }
                 compare(req.body.password, rows[0].password_hash)
                     .then((match) => {
                         if (match) {
-                            req.session.userId = rows[0].id; 
+                            req.session.userId = rows[0].id;
                             res.json({ data: rows[0] });
                         }
                     })
                     .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
-    
     } else {
         res.json({ data: null });
     }
@@ -97,7 +91,12 @@ app.post("/login", (req, res) => {
 
 app.post("/welcome", (req, res) => {
     console.log("welcome body", req.body);
-    if (req.body.firstname && req.body.lastname && req.body.email && req.body.password) {
+    if (
+        req.body.firstname &&
+        req.body.lastname &&
+        req.body.email &&
+        req.body.password
+    ) {
         const { firstname, lastname, email, password } = req.body;
         hash(password)
             .then((password_hash) => {
@@ -117,7 +116,7 @@ app.post("/welcome", (req, res) => {
             });
     } else {
         res.json({ data: null });
-    }        
+    }
 });
 
 app.get("/reset", (req, res) => {
@@ -138,14 +137,14 @@ app.post("/reset/start", (req, res) => {
                 if (rows.length === 0) {
                     res.json({ data: null });
                 }
-                let code=crs({ length: 6})
+                let code = crs({ length: 6 });
                 db.addSecretCode(emailRes, code)
                     .then(({ rows }) => {
                         console.log("add secret code", rows);
                         ses.sendEmail(
-                            emailRes, 
+                            emailRes,
                             `Your Verification Code is: ${code}`,
-                            "Under The Sea - Password Reset Verification" 
+                            "Under The Sea - Password Reset Verification"
                         )
                             .then(() => {
                                 res.json({ step: 2 });
@@ -157,14 +156,14 @@ app.post("/reset/start", (req, res) => {
             .catch((err) => console.log(err));
     } else {
         res.json({ data: null });
-    }  
+    }
 });
 
 app.post("/reset/verify", (req, res) => {
     console.log("verification body", req.body);
     if (req.body.secret && req.body.password) {
-         const { secret } = req.body;
-         console.log("the secret is", secret)
+        const { secret } = req.body;
+        console.log("the secret is", secret);
         db.secretCodeCheck(secret)
             .then(({ rows }) => {
                 console.log("here you go", rows);
@@ -193,46 +192,78 @@ app.post("/reset/verify", (req, res) => {
     }
 });
 
-
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { filename } = req.file;
-    console.log(filename)
+    console.log(filename);
     if (req.file) {
-        db.addImage(
-            req.session.userId,s3Url + filename)
+        db.addImage(req.session.userId, s3Url + filename)
             .then(({ rows }) => {
+                console.log("uuploader", rows);
                 res.json({ data: rows[0] });
             })
             .catch((err) => {
                 console.log(err);
             });
     } else {
-         res.json({ data: null });
+        res.json({ data: null });
     }
 });
 
 app.get("/api/user", (req, res) => {
-       db.getUser(req.session.userId)
-            .then(({ rows }) => {
-                console.log("GETTING USER ROWS", rows);
-                res.json({ data: rows[0] });
-                
-            })
-            .catch((err) => console.log(err));
+    db.getUser(req.session.userId)
+        .then(({ rows }) => {
+            console.log("GETTING USER ROWS", rows);
+            res.json({ data: rows[0] });
+        })
+        .catch((err) => console.log(err));
 });
 
-app.post("/api/user", (req, res) => {
-    console.log("POST USER BODY", req.body)
+app.post("/user", (req, res) => {
+    console.log("POST USER BODY", req.body);
     db.getUser(req.body.id)
         .then(({ rows }) => {
-            console.log("POST USER ROWS", rows);
-            res.json({ data: rows[0], id: req.session.userId });
+            if (!rows[0]) {
+                console.log("oups");
+                res.json({ oups: true });
+            } else {
+                console.log("POST USER ROWS", rows);
+                res.json({ data: rows[0], id: req.session.userId });
+            }
+        })
+        .catch((err) => console.log(err));
+});
+
+app.get("/findPeople/:selection", (req, res) => {
+    db.getMatchingUsers(req.params.selection)
+        .then(({ rows }) => {
+            if (!rows[0]) {
+                console.log("oups");
+                res.json({ oups: true });
+            } else {
+                console.log("POST FIND PEOPLE ROWS", rows);
+                res.json({ data: rows });
+            }
+        })
+        .catch((err) => console.log(err));
+});
+
+app.get("/users/most-recent", (req, res) => {
+    console.log("MOST RECENT BODY", req.body);
+    db.getLastResults()
+        .then(({ rows }) => {
+            if (!rows[0]) {
+                console.log("oups");
+                res.json({ oups: true });
+            } else {
+                console.log("MOST RECENT ROWS", rows);
+                res.json({ data: rows });
+            }
         })
         .catch((err) => console.log(err));
 });
 
 app.post("/update-bio", (req, res) => {
-    console.log("REQ BODY UPDATE BIO", req.body) 
+    console.log("REQ BODY UPDATE BIO", req.body);
     db.addBio(req.session.userId, req.body.draft)
         .then(({ rows }) => {
             console.log(" update bio ROWS", rows);
@@ -242,11 +273,9 @@ app.post("/update-bio", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-     req.session = null;
-     res.redirect("/");
-  
+    req.session = null;
+    res.redirect("/");
 });
-
 
 app.get("*", function (req, res) {
     // runs if the user goes to any route except /welcome
@@ -258,5 +287,7 @@ app.get("*", function (req, res) {
 });
 
 var server = app.listen(process.env.PORT || 3001, () =>
-    console.log(`🟢 Listening Port ${server.address().port} ... ~ SocialNetwork ~`)
+    console.log(
+        `🟢 Listening Port ${server.address().port} ... ~ SocialNetwork ~`
+    )
 );

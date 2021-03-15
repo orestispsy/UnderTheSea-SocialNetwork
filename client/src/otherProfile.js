@@ -14,10 +14,13 @@ export default class otherProfile extends Component {
     componentDidMount() {
         console.log("otherProfile prop match", this.props.match);
          axios
-             .post("/api/user", this.props.match.params)
+             .post("/user", this.props.match.params)
              .then(({ data }) => {
                  console.log("DATA In OTHERPROFILE", data);
-                 if (this.props.match.params.id == data.id) {
+                 if (data.oups) {
+                      this.props.history.push("/");
+                 }
+                else if (this.props.match.params.id == data.id) {
                      this.props.history.push("/");
                  } else {
                      this.setState(
@@ -41,8 +44,11 @@ export default class otherProfile extends Component {
     }
 
 
+
     render() {
-        return (
+        
+ 
+        return (  
             <div className="hello">
                 <div className="bubbles2"></div>
                 {this.state.firstname} {this.state.lastname}
@@ -52,9 +58,10 @@ export default class otherProfile extends Component {
                         src={this.state.imageUrl}
                         alt={`${this.state.firstname} ${this.state.lastname}`}
                     />
+                      {this.state.bio && (
                     <div className="bio">
                         <h2>{this.state.bio}</h2>
-                    </div>
+                    </div>)}
                 </div>
             </div>
         );

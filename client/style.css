@@ -4,11 +4,12 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
     min-height: 100vh;
     font-family: "Bangers", cursive;
     letter-spacing: 2px;
     margin: 0;
-    box-shadow: inset 0 0 0 100vh rgba(255, 0, 0, 0.185);
+    box-shadow: inset 0 0 0 100vh rgba(255, 0, 0, 0.233);
 }
 
 .welcome {
@@ -74,8 +75,23 @@ body {
     outline: none;
 }
 
+input:focus {
+    outline: none;
+}
+
+form {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: 200px;
+    width: 250px;
+    margin-bottom: -30px;
+    text-align: center;
+}
+
 .regSpan {
-    margin:15px;
+    margin: 15px;
 }
 
 button {
@@ -119,9 +135,9 @@ button:focus {
 
 .bubbles2 {
     background-image: url("bubbles.gif");
-    margin-bottom: -200px;
+    margin-bottom: -220px;
     width: 300px;
-    height: 13vh;
+    height: 14vh;
 }
 
 .error {
@@ -141,15 +157,30 @@ button:focus {
     color: rgb(85, 142, 196);
 }
 
+.findPeople {
+    text-decoration: none;
+    color: cyan;
+    font-size: 25px;
+    text-shadow: 0 0 20px black;
+}
+
 .logo {
-    font-size: 60px;
+    font-size: 45px;
     text-shadow: -1px 1px 0 white, 1px -1px 0 white, 1px 1px 0 white,
-        -1px -1px 0 white;
-  box-shadow: inset 0 0 0 10vh rgba(0, 255, 179, 0.068);
-  padding:5px;
-  border-radius:1vh;
-  margin:-5px;
-  white-space:pre-wrap
+        -1px -1px 0 white, -1px 1px 0 rgb(0, 0, 0), 0 -0 10px rgb(0, 0, 0),
+        0 0 10px rgb(0, 0, 0), -0 -0 10px rgb(0, 0, 0);
+    background: radial-gradient(
+        circle at 50%,
+        rgba(0, 255, 34, 0.048),
+        rgba(255, 0, 0, 0.116) 70%,
+        rgba(0, 0, 0, 0.089) 80%,
+        rgba(2, 255, 213, 0) 100%
+    );
+    padding: 5px;
+    border-radius: 40%;
+    margin-left: 10px;
+    white-space: pre-wrap;
+    opacity: 70%;
 }
 
 .appContainer {
@@ -164,6 +195,9 @@ button:focus {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    height: 70px;
+
+    border-radius: 1vh;
 }
 
 .uploader {
@@ -183,33 +217,30 @@ button:focus {
     box-shadow: inset 0 0 0 100vh rgba(0, 0, 0, 0.329),
         -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
         -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
-        
 }
 
 .uploader h1 {
     margin-top: 20px;
     margin-bottom: -1px;
-   
 }
 
 .uploaderBack {
-   display: flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     align-self: center;
-    
 }
 
 .uploaderBack h3 {
-     align-self: center;
+    align-self: center;
     font-size: 100px;
     margin: 0;
     color: white;
     text-shadow: -0 0 20px rgba(0, 0, 0, 0.7), 0 -0 20px rgba(0, 0, 0, 0.7),
         -0 -0 20px rgba(0, 0, 0, 0.7), -0 -0 20px rgba(0, 0, 0, 0.7);
-        letter-spacing: 5px;
-        font-weight: lighter;
+    letter-spacing: 5px;
+    font-weight: lighter;
 }
 
 .fileUploader {
@@ -233,8 +264,8 @@ button:focus {
 .fileUploader input {
     margin: 10px 0 0 10px;
     width: 200px;
-    height:30px;
-    color:white
+    height: 30px;
+    color: white;
 }
 .X {
     align-self: flex-end;
@@ -262,7 +293,7 @@ button:focus {
     justify-content: center;
     align-items: center;
     font-size: 100px;
-    margin-top: 7vh;
+    margin-top: 5vh;
     color: white;
     text-shadow: -0 0 20px rgba(0, 0, 0, 0.7), 0 -0 20px rgba(0, 0, 0, 0.7),
         -0 -0 20px rgba(0, 0, 0, 0.7), -0 -0 20px rgba(0, 0, 0, 0.7);
@@ -277,10 +308,9 @@ button:focus {
     box-shadow: -0 0 10px rgba(0, 0, 0, 0.7), 0 -0 10px rgba(0, 0, 0, 0.7),
         -0 -0 10px rgba(0, 0, 0, 0.7), -0 -0 10px rgba(0, 0, 0, 0.7);
     border-radius: 3vh;
-    padding: 40px;
-    margin-top: 5vh;   
+    padding: 60px;
+    margin-top: 5vh;
 }
-
 
 .profile-pic {
     margin: 10px;
@@ -298,7 +328,6 @@ button:focus {
     cursor: pointer;
     box-shadow: -0 0 5px rgba(0, 0, 0, 0.7), 0 -0 5px rgba(0, 0, 0, 0.7),
         -0 -0 5px rgba(0, 0, 0, 0.7), -0 -0 5px rgba(0, 0, 0, 0.7);
-    border-radius: 1vh;
 }
 
 textarea {
@@ -312,11 +341,10 @@ textarea {
     border-radius: 1vh;
     margin-bottom: 20px;
     color: white;
-    padding:10px;
+    padding: 10px;
 }
 
 .bio {
-    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -333,12 +361,12 @@ textarea {
     text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
         -0 -0 5px black;
     max-width: 30vh;
-    max-height:14vh;
-    overflow:hidden;
+    max-height: 14vh;
+    overflow: hidden;
     letter-spacing: 2px;
     padding: 15px;
-    box-shadow: -0 0 10px rgba(0, 0, 0, 0.308), 0 -0 10px rgba(0, 0, 0, 0.308),
-        -0 -0 10px rgba(0, 0, 0, 0.308), -0 -0 10px rgba(0, 0, 0, 0.308);
+    box-shadow: -0 0 5px rgba(0, 0, 0, 0.308), 0 -0 5px rgba(0, 0, 0, 0.308),
+        -0 -0 5px rgba(0, 0, 0, 0.308), -0 -0 5px rgba(0, 0, 0, 0.308);
     border-radius: 1vh;
     background-color: rgba(17, 243, 73, 0.089);
 }
@@ -349,8 +377,8 @@ textarea {
 
 .logout {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 10px;
+    right: 15px;
     font-size: 30px;
     color: white;
     cursor: pointer;
@@ -358,9 +386,83 @@ textarea {
         -0 -0 5px rgba(0, 0, 0, 0.7), -0 -0 5px rgba(0, 0, 0, 0.7);
 }
 
-::-webkit-scrollbar {
-  width: 0
+.logout:hover {
+    color: rgb(245, 65, 65);
 }
 
+::-webkit-scrollbar {
+    width: 0;
+}
 
+.test {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    text-shadow: none;
+}
 
+.peopleSearch {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 35px;
+    color: rgb(141, 235, 137);
+    text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
+        -0 -0 5px black;
+    letter-spacing: 2px;
+    padding: 15px;
+    box-shadow: -0 0 5px rgba(0, 0, 0, 0.308), 0 -0 5px rgba(0, 0, 0, 0.308),
+        -0 -0 5px rgba(0, 0, 0, 0.308), -0 -0 5px rgba(0, 0, 0, 0.308);
+    border-radius: 1vh;
+    background-color: rgba(0, 0, 0, 0.301);
+    margin-top: 15px;
+    margin-bottom: 80px;
+}
+
+.peopleSearch input {
+    background-color: rgba(0, 0, 0, 0.219);
+    color: white;
+    text-align: center;
+    border-radius: 5vh;
+    border-color: transparent;
+    border-style: solid;
+    margin: 10px;
+    width: 200px;
+    height: 30px;
+}
+
+.peopleSearch h2 {
+    margin: 10px;
+    color: yellow;
+}
+
+.peopleSearch img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: -0 0 5px rgba(0, 0, 0, 0.308), 0 -0 5px rgba(0, 0, 0, 0.308),
+        -0 -0 5px rgba(0, 0, 0, 0.308), -0 -0 5px rgba(0, 0, 0, 0.308);
+}
+
+.preview {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+
+.results {
+    max-height: 9vh;
+    overflow: hidden;
+}
+
+.results:hover {
+    overflow-y: visible;
+}

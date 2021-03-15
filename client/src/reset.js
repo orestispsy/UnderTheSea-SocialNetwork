@@ -88,20 +88,22 @@ export default class Reset extends React.Component {
             return (
                 <div className="regForm">
                     <h1>Confirm</h1>
-                    <span>Secret Code</span>
-                    <input
-                        autoComplete="none"
-                        name="secret"
-                        placeholder="Secret Code"
-                        onChange={(e) => this.handleChange(e)}
-                    />
-                    <span>New Password</span>
-                    <input
-                        name="password"
-                        placeholder="New Password"
-                        type="password"
-                        onChange={(e) => this.handleChange(e)}
-                    />
+                    <form autoComplete="off">
+                        <span>Secret Code</span>
+                        <input
+                            autoComplete="none"
+                            name="secret"
+                            placeholder="Secret Code"
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                        <span>New Password</span>
+                        <input
+                            name="password"
+                            placeholder="New Password"
+                            type="password"
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                    </form>
                     {this.state.error && (
                         <p className="error">Oups! Something Went Wrong.</p>
                     )}
