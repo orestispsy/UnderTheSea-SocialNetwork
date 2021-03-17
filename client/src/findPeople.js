@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 
-export default function FindPeople() {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [preUsers, setPreUsers] = useState("");
+export default function FindPeople({ showProfile }) {
+    const [searchTerm, setSearchTerm] = useState();
+    const [preUsers, setPreUsers] = useState();
     const [users, setUsers] = useState();
 
     useEffect(function () {
@@ -42,7 +42,7 @@ export default function FindPeople() {
     return (
         <div className="peopleSearch">
             <div>
-                Search
+                Search ➲
                 <input
                     defaultValue={searchTerm}
                     onChange={changeHandler}
@@ -59,6 +59,7 @@ export default function FindPeople() {
                                         <img
                                             alt={`${data.firstname} ${data.lastname}`}
                                             src={data.img_url}
+                                            onClick={(arg) => showProfile(true)}
                                         />
                                     </Link>
                                     {data.firstname} {data.lastname}
@@ -69,7 +70,6 @@ export default function FindPeople() {
             )}
             {users && (
                 <div className="preview">
-                    <h2>Results</h2>
                     <div className="results">
                         {users &&
                             users.map(function (data) {

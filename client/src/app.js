@@ -15,6 +15,7 @@ export default class App extends Component {
             uploaderIsVisible: false,
             profileIsVisible: true,
             synchIt: false,
+            visibility:false
         };
     }
 
@@ -77,6 +78,19 @@ export default class App extends Component {
             bio: arg,
         });
     }
+    
+    hideUploader(arg) {
+        this.setState({
+            uploaderIsVisible: arg, 
+        });
+    }
+
+    showProfile(arg) {
+        this.setState({
+            profileIsVisible: arg,
+        });
+    }
+    
 
     render() {
         return (
@@ -85,10 +99,21 @@ export default class App extends Component {
                     <div className="appBar">
                         <div className="logo">Under The Surface </div>
                         <div className="appBar">
-                            <Link to="/user" className="findPeople">
-                                <div>Find People</div>
+                            <Link
+                                to="/user"
+                                onClick={(arg) => this.hideUploader(false)}
+                            >
+                                <div className="find"></div>
                             </Link>
-                            <Link to="/">
+                            <Link
+                                to="/"
+                                onClick={(arg) => this.showProfile(false)}
+                                onClick={(arg) =>
+                                    this.hideUploader(
+                                        this.state.profileIsVisible
+                                    )
+                                }
+                            >
                                 <ProfilePic
                                     firstname={this.state.firstname}
                                     lastname={this.state.lastname}
@@ -117,7 +142,16 @@ export default class App extends Component {
                             )}
                         />
                     )}
-                    <Route path="/user/" component={FindPeople} />
+
+                    <Route
+                        path="/user/"
+                        render={(props) => (
+                            <FindPeople
+                                showProfile={(arg) => this.showProfile(arg)}
+                            />
+                        )}
+                    />
+
                     {this.state.profileIsVisible && (
                         <Route
                             path="/user/:id"
@@ -143,9 +177,12 @@ export default class App extends Component {
                             imageUrl={this.state.imageUrl}
                             picUpdate={(arg) => this.picUpdate(arg)}
                             uploaderIsVisible={this.state.uploaderIsVisible}
+                            hideUploader={(arg) => this.hideUploader(arg)}
+                            showProfile={(arg) => this.showProfile(arg)}
                         />
                     )}
                 </div>
+           
             </BrowserRouter>
         );
     }
