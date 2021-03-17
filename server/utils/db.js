@@ -109,3 +109,37 @@ module.exports.getLastResults = () => {
     `;
     return db.query(q);
 };
+
+module.exports.addUserRelationship = (user, person, acceptStatus) => {
+    const q = `
+        INSERT INTO friendships (sender_id, recipient_id, accepted)
+        VALUES ($1, $2, $3)
+    ON CONFLICT (id)
+    DO UPDATE SET sender_id=$1, recipient_id = $2
+    RETURNING *
+    `;
+    const params = [user, person, acceptStatus];
+    return db.query(q, params);
+};
+
+module.exports.getUserRelationship = (user, person) => {
+    const q = `
+        SELECT * FROM friendships
+        WHERE (recipient_id = $1 AND sender_id = $2)
+        OR (recipient_id = $2 AND sender_id = $1);
+       
+    `;
+    const params = [user, person];
+    return db.query(q, params);
+};
+
+
+module.exports.deleteUserRelationship = (user, person) => {
+    const q = `
+        DELETE FROM friendships
+        WHERE (recipient_id = $1 AND sender_id = $2)
+        OR (recipient_id = $2 AND sender_id = $1);
+    `;
+    const params = [user, person];
+    return db.query(q, params);
+};

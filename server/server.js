@@ -272,6 +272,43 @@ app.post("/update-bio", (req, res) => {
         .catch((err) => console.log(err));
 });
 
+app.get("/friend-status/:selection", (req, res) => {
+    db.getUserRelationship(req.session.userId, req.params.selection)
+        .then(({ rows }) => {
+            console.log(" friend-status ROWS", rows);
+            res.json({ data: rows[rows.length-1] });
+        })
+        .catch((err) => console.log(err));
+});
+
+app.post("/friend-status/:selection", (req, res) => {
+    console.log("FRIEND RELATIONSHIP BODY", req.body)
+    var boolean = true;
+        if (!req.body.true) {
+           boolean = false
+        }
+            db.addUserRelationship(
+            req.session.userId,
+            req.params.selection,
+            boolean
+        )
+            .then(({ rows }) => {
+                console.log(" friend-status ROWS", rows);
+                res.json({ data: rows[0] });
+            })
+            .catch((err) => console.log(err));
+});
+
+app.post("/friend-status-delete", (req, res) => {
+    console.log("FRIEND STATUS DELETE BODY", req.body);
+    db.deleteUserRelationship(req.session.userId, req.body.otherUserId)
+        .then(({ rows }) => {
+            console.log("DONE", rows);
+  
+        })
+        .catch((err) => console.log(err));
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");

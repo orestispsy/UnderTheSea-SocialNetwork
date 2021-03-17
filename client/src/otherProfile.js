@@ -1,5 +1,6 @@
 import { Component } from "react";
 import axios from "./axios";
+import FriendButton from "./friendButton"
 
 export default class otherProfile extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ export default class otherProfile extends Component {
                          },
                          () =>
                              console.log(
-                                 "this.state IN OTHERPROFILE after setState: ",
+                                 "this.state IN OTHER PROFILE after setState: ",
                                  this.state
                              )
                      );
@@ -48,20 +49,23 @@ export default class otherProfile extends Component {
     render() {
         
  
-        return (  
+        return (
             <div className="hello">
                 <div className="bubbles2"></div>
                 {this.state.firstname} {this.state.lastname}
-                <div className="profile">
+                <div className="profile-user">
                     <img
-                        className="profile-pic-big"
+                        className="profile-user-pic"
                         src={this.state.imageUrl}
                         alt={`${this.state.firstname} ${this.state.lastname}`}
                     />
-                      {this.state.bio && (
-                    <div className="bio">
-                        <h2>{this.state.bio}</h2>
-                    </div>)}
+
+                    {this.state.bio && (
+                        <div className="bio">
+                            <h2>{this.state.bio}</h2>
+                        </div>
+                    )}
+                    <FriendButton otherUserId={this.props.match.params.id}/>
                 </div>
             </div>
         );

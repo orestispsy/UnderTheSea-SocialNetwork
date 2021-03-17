@@ -59,6 +59,7 @@ export default class Uploader extends Component {
                     <div
                         className="X"
                         onClick={() => this.props.toggleUploader()}
+                    
                     >
                         X
                     </div>
@@ -75,11 +76,7 @@ export default class Uploader extends Component {
                     {this.state.error && (
                         <p className="error">Oups! Something Went Wrong.</p>
                     )}
-                    <button
-                        onClick={(() => this.handleClick())}
-                    >
-                        Submit
-                    </button>
+                    <button onClick={() => this.handleClick()}>Submit</button>
                 </div>
             </div>
         );
