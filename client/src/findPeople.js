@@ -10,7 +10,6 @@ export default function FindPeople({ showProfile }) {
     useEffect(function () {
         axios.get("/users/most-recent").then(({ data }) => {
             setPreUsers(data.data);
-            console.log("FIND PEOPLE ROWS", data);
         });
     }, []);
 
@@ -19,9 +18,7 @@ export default function FindPeople({ showProfile }) {
             axios
                 .get("/findPeople/" + searchTerm)
                 .then(({ data }) => {
-                    console.log("DATA In FIND PEOPLE", data);
                     if (data) {
-                        console.log("got it");
                         setUsers(data.data);
                     }
                 })
@@ -31,8 +28,6 @@ export default function FindPeople({ showProfile }) {
         },
         [searchTerm]
     );
-
-    console.log("SEARCH TEEEERM:", searchTerm);
 
     function changeHandler({ target }) {
         setSearchTerm(target.value);

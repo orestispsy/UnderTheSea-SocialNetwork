@@ -23,7 +23,6 @@ export default class App extends Component {
         axios
             .get("/api/user")
             .then(({ data }) => {
-                console.log("DATA In APP", data);
                 if (data) {
                     this.setState(
                         {
@@ -32,12 +31,7 @@ export default class App extends Component {
                             firstname: data.data.firstname,
                             lastname: data.data.lastname,
                             bio: data.data.bio,
-                        },
-                        () =>
-                            console.log(
-                                "this.state IN APP after setState: ",
-                                this.state
-                            )
+                        }
                     );
                 }
             })

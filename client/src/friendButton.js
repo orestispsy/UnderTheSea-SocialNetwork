@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {useFriendSubmit} from "./hooks/useFriendSubmit";
+import { useFriendSubmit } from "./hooks/useFriendSubmit";
 
 export default function FriendButton({ otherUserId }) {
     const [buttonText, setButtonText] = useState();
@@ -9,30 +9,32 @@ export default function FriendButton({ otherUserId }) {
         otherUserId,
         boolean,
         buttonText,
+        setButtonText,
+        setBoolean
     );
 
-    useEffect(
-        function () {
-            axios.get("/friend-status/" + otherUserId).then(({ data }) => {
-                console.log("useEffect in Button DATA", data);
-                if (!data.data) {
-                    setButtonText("Make Friend");
-                    setBoolean(false);
-                } else if (data.data && !data.data.accepted) {
+    useEffect(function () {
+        axios.get("/friend-status/" + otherUserId).then(({ data }) => {
+            console.log("useEffect in Button DATA", data);
+            setButtonText("HELP");
+            if (!data.data) {
+                setButtonText("Make Friend");
+            } else if (!data.data.accepted) {
+                if (data.loggedUser === data.data.sender_id) {
                     setButtonText("Cancel Friend Request");
-                } else if (data.data && data.data.accepted) {
-                    setButtonText("Unfriend");
-                    setBoolean(false)
+                } else {
+                    setButtonText("Accept Friend Request");
+                    setBoolean(true);
                 }
-            });
-        },
-        []
-    );
+            } else if (data.data.accepted) {
+                setButtonText("Unfriend");
+            }
+        });
+    }, []);
 
-    console.log("params id in FRIEND BUTTON", otherUserId)
     return (
-        <div placeholder="hello" className="friendButt" onClick={handleSubmit}>
+        <div className="friendButt" onClick={handleSubmit}>
             {buttonText}
         </div>
     );
-};
+}

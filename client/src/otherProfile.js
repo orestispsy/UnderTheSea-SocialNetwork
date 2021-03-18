@@ -8,16 +8,12 @@ export default class otherProfile extends Component {
         this.state = {
             
         };
-
-        console.log("Props in otherProfile", props);
     }
 
     componentDidMount() {
-        console.log("otherProfile prop match", this.props.match);
          axios
              .post("/user", this.props.match.params)
              .then(({ data }) => {
-                 console.log("DATA In OTHERPROFILE", data);
                  if (data.oups) {
                       this.props.history.push("/");
                  }
@@ -30,12 +26,7 @@ export default class otherProfile extends Component {
                              firstname: data.data.firstname,
                              lastname: data.data.lastname,
                              bio: data.data.bio,
-                         },
-                         () =>
-                             console.log(
-                                 "this.state IN OTHER PROFILE after setState: ",
-                                 this.state
-                             )
+                         }
                      );
                  }
              })

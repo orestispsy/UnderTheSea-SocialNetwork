@@ -1,29 +1,43 @@
-import { useState } from "react";
 import axios from "axios";
 
-export function useFriendSubmit(otherUserId, boolean, buttonText) {
-    console.log("MEEEEEEEEEEEEEEN", buttonText);
+export function useFriendSubmit(
+    otherUserId,
+    boolean,
+    buttonText,
+    setButtonText,
+    setBoolean
+) {
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("searching?",otherUserId, boolean, buttonText);
-        if (buttonText === "Cancel Friend Request") {
-            console.log("yes it is");
+        if (
+            buttonText === "Cancel Friend Request" ||
+            buttonText === "Unfriend"
+        ) {
             axios
-                .post("/friend-status-delete", {otherUserId})
+                .post("/friend-status-delete", { otherUserId })
                 .then(({ data }) => {
-                    console.log("TAKE IT MEN", data);
+                    console.log("DATA in Handlesubmit cancel/unfriend", data);
+                    setButtonText("Make Friend");
                 })
                 .catch((err) => {
-                    console.log(`error in axios post`, err);
+                    console.log(err);
                 });
         } else {
             axios
-                .post("/friend-status/" + otherUserId, boolean)
+                .post("/friend-status/" + otherUserId, { boolean })
                 .then(({ data }) => {
-                    console.log("TAKE IT MEN", data);
+                    setBoolean(false);
+                    console.log("DATA in Handlesubmit", data);
+                    if (data.data.accepted) {
+                        setButtonText("Unfriend");
+                    } else if (!data.data) {
+                        setButtonText("Make Friend");
+                    } else {
+                        setButtonText("Cancel Friend Request");
+                    }
                 })
                 .catch((err) => {
-                    console.log(`error in axios post ${otherUserId}:`, err);
+                    console.log(err);
                 });
         }
     };
