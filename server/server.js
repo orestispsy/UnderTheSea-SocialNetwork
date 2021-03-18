@@ -253,7 +253,6 @@ app.get("/users/most-recent", (req, res) => {
         .then(({ rows }) => {
             if (!rows[0]) {
                 console.log("oups");
-                res.json({ oups: true });
             } else {
                 console.log("MOST RECENT ROWS", rows);
                 res.json({ data: rows });
@@ -276,35 +275,33 @@ app.get("/friend-status/:selection", (req, res) => {
     db.getUserRelationship(req.session.userId, req.params.selection)
         .then(({ rows }) => {
             console.log(" friend-status ROWS", rows);
-            res.json({ data: rows[rows.length-1] });
+            res.json({
+                data: rows[rows.length - 1],
+                loggedUser: req.session.userId,
+            });
         })
         .catch((err) => console.log(err));
 });
 
 app.post("/friend-status/:selection", (req, res) => {
-    console.log("FRIEND RELATIONSHIP BODY", req.body)
-    var boolean = true;
-        if (!req.body.true) {
-           boolean = false
-        }
             db.addUserRelationship(
-            req.session.userId,
-            req.params.selection,
-            boolean
-        )
-            .then(({ rows }) => {
-                console.log(" friend-status ROWS", rows);
-                res.json({ data: rows[0] });
-            })
-            .catch((err) => console.log(err));
+                req.session.userId,
+                req.params.selection,
+                req.body.boolean
+            )
+                .then(({ rows }) => {
+                    console.log(" friend-status ROWS", rows);
+                    res.json({ data: rows[0] });
+                })
+                .catch((err) => console.log(err));
 });
 
 app.post("/friend-status-delete", (req, res) => {
     console.log("FRIEND STATUS DELETE BODY", req.body);
     db.deleteUserRelationship(req.session.userId, req.body.otherUserId)
         .then(({ rows }) => {
-            console.log("DONE", rows);
-  
+            console.log("DELETING FRIEND STATUS DONE", rows);
+             res.json({ data: rows });
         })
         .catch((err) => console.log(err));
 });
