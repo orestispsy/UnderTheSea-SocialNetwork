@@ -15,10 +15,11 @@ export default class Reset extends React.Component {
         axios
             .post("/reset/start", this.state)
             .then(({ data }) => {
-                console.log("DATA", data.step);
+                console.log("DATA", data);
                 if (data.step) {
                     this.setState({
                         step: 2,
+                        error: false,
                     });
                 } else {
                     console.log("data fail");
@@ -36,10 +37,11 @@ export default class Reset extends React.Component {
         axios
             .post("/reset/verify", this.state)
             .then(({ data }) => {
-                console.log("DATA", data.step);
+                console.log("DATA", data);
                 if (data.step) {
                     this.setState({
                         step: 3,
+                        error: false,
                     });
                 } else {
                     console.log("data fail");
@@ -62,6 +64,12 @@ export default class Reset extends React.Component {
         );
     }
 
+    handleErrorMsg(e) {
+        this.setState({
+            error: false,
+        });
+    }
+
     render() {
         const { step } = this.state;
         if (step == 1) {
@@ -74,6 +82,7 @@ export default class Reset extends React.Component {
                         name="emailRes"
                         placeholder="Email"
                         onChange={(e) => this.handleChange(e)}
+                        onClick={() => this.handleErrorMsg()}
                     />
                     {this.state.error && (
                         <p className="error">Oups! Something Went Wrong.</p>
@@ -95,6 +104,7 @@ export default class Reset extends React.Component {
                             name="secret"
                             placeholder="Secret Code"
                             onChange={(e) => this.handleChange(e)}
+                            onClick={() => this.handleErrorMsg()}
                         />
                         <span>New Password</span>
                         <input
@@ -102,6 +112,7 @@ export default class Reset extends React.Component {
                             placeholder="New Password"
                             type="password"
                             onChange={(e) => this.handleChange(e)}
+                            onClick={() => this.handleErrorMsg()}
                         />
                     </form>
                     {this.state.error && (

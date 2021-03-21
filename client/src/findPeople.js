@@ -35,45 +35,58 @@ export default function FindPeople({ showProfile }) {
     }
 
     return (
-        <div className="peopleSearch">
-            <div>
-                Search ➲
-                <input
-                    defaultValue={searchTerm}
-                    onChange={changeHandler}
-                ></input>
-            </div>
-            {!users && (
-                <div className="preview">
-                    <h2>Latest</h2>
-                    {preUsers &&
-                        preUsers.map(function (data) {
-                            return (
-                                <div className="preview" key={data.id}>
-                                    <Link to={`/user/${data.id}`}>
-                                        <img
-                                            alt={`${data.firstname} ${data.lastname}`}
-                                            src={data.img_url}
-                                            onClick={(arg) => showProfile(true)}
-                                        />
-                                    </Link>
-                                    {data.firstname} {data.lastname}
-                                </div>
-                            );
-                        })}
+        <div className="searchContainer">
+            <div className="peopleSearch">
+                <div>
+                    Search ➲
+                    <input
+                        defaultValue={searchTerm}
+                        onChange={changeHandler}
+                    ></input>
                 </div>
-            )}
-            {users && (
-                <div className="preview">
-                    <div className="results">
-                        {users &&
-                            users.map(function (data) {
+
+                {users && (
+                    <div className="preview">
+                        <div className="results">
+                            {users &&
+                                users.map(function (data) {
+                                    return (
+                                        <div className="results2" key={data.id}>
+                                            <Link
+                                                to={`/user/${data.id}`}
+                                                onClick={(arg) =>
+                                                    showProfile(true)
+                                                }
+                                            >
+                                                <img
+                                                    alt={`${data.firstname} ${data.lastname}`}
+                                                    src={data.img_url}
+                                                />
+                                            </Link>
+                                            {data.firstname} {data.lastname}
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {!users && (
+                <div className="peopleSearch2">
+                    <div className="preview">
+                        <h2>Latest</h2>
+                        {preUsers &&
+                            preUsers.map(function (data) {
                                 return (
                                     <div className="preview" key={data.id}>
                                         <Link to={`/user/${data.id}`}>
                                             <img
                                                 alt={`${data.firstname} ${data.lastname}`}
                                                 src={data.img_url}
+                                                onClick={(arg) =>
+                                                    showProfile(true)
+                                                }
                                             />
                                         </Link>
                                         {data.firstname} {data.lastname}

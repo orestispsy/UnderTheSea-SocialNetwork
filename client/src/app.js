@@ -5,6 +5,7 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherProfile";
 import FindPeople from "./findPeople";
+import Friends from "./friends";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
 export default class App extends Component {
@@ -15,7 +16,7 @@ export default class App extends Component {
             uploaderIsVisible: false,
             profileIsVisible: true,
             synchIt: false,
-            visibility:false
+            visibility: false,
         };
     }
 
@@ -24,15 +25,14 @@ export default class App extends Component {
             .get("/api/user")
             .then(({ data }) => {
                 if (data) {
-                    this.setState(
-                        {
-                            synchIt: true,
-                            imageUrl: data.data.img_url,
-                            firstname: data.data.firstname,
-                            lastname: data.data.lastname,
-                            bio: data.data.bio,
-                        }
-                    );
+                    this.setState({
+                        synchIt: true,
+                        imageUrl: data.data.img_url,
+                        firstname: data.data.firstname,
+                        lastname: data.data.lastname,
+                        bio: data.data.bio,
+                        id: data.data.id,
+                    });
                 }
             })
             .catch((err) => {
@@ -72,10 +72,10 @@ export default class App extends Component {
             bio: arg,
         });
     }
-    
+
     hideUploader(arg) {
         this.setState({
-            uploaderIsVisible: arg, 
+            uploaderIsVisible: arg,
         });
     }
 
@@ -84,7 +84,6 @@ export default class App extends Component {
             profileIsVisible: arg,
         });
     }
-    
 
     render() {
         return (
@@ -93,6 +92,12 @@ export default class App extends Component {
                     <div className="appBar">
                         <div className="logo">Under The Surface </div>
                         <div className="appBar">
+                            <Link
+                                to="/friends"
+                                onClick={(arg) => this.showProfile(false)}
+                            >
+                                <div className="friendsBar"></div>
+                            </Link>
                             <Link
                                 to="/user"
                                 onClick={(arg) => this.hideUploader(false)}
@@ -162,6 +167,17 @@ export default class App extends Component {
                         />
                     )}
 
+                    <Route
+                        exact
+                        path="/friends"
+                        render={(props) => (
+                            <Friends
+                                id={this.state.id}
+                                showProfile={(arg) => this.showProfile(arg)}
+                            />
+                        )}
+                    />
+
                     <div className="logout" onClick={() => this.logOut()}>
                         <span>logout</span>
                     </div>
@@ -176,7 +192,6 @@ export default class App extends Component {
                         />
                     )}
                 </div>
-           
             </BrowserRouter>
         );
     }

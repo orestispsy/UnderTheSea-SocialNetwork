@@ -135,23 +135,26 @@ app.post("/reset/start", (req, res) => {
             .then(({ rows }) => {
                 console.log("here you go", rows);
                 if (rows.length === 0) {
+                    console.log("reset rows", rows);
                     res.json({ data: null });
+                } else {
+                    let code = crs({ length: 6 });
+                    db.addSecretCode(emailRes, code)
+                        .then(({ rows }) => {
+                            console.log("add secret code", rows);
+
+                            ses.sendEmail(
+                                emailRes,
+                                `Your Verification Code is: ${code}`,
+                                "Under The Sea - Password Reset Verification"
+                            )
+                                .then(() => {
+                                    res.json({ step: 2, error: false });
+                                })
+                                .catch((err) => console.log(err));
+                        })
+                        .catch((err) => console.log(err));
                 }
-                let code = crs({ length: 6 });
-                db.addSecretCode(emailRes, code)
-                    .then(({ rows }) => {
-                        console.log("add secret code", rows);
-                        ses.sendEmail(
-                            emailRes,
-                            `Your Verification Code is: ${code}`,
-                            "Under The Sea - Password Reset Verification"
-                        )
-                            .then(() => {
-                                res.json({ step: 2 });
-                            })
-                            .catch((err) => console.log(err));
-                    })
-                    .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
     } else {
@@ -276,7 +279,7 @@ app.get("/friend-status/:selection", (req, res) => {
         .then(({ rows }) => {
             console.log(" friend-status ROWS", rows);
             res.json({
-                data: rows[rows.length - 1],
+                data: rows[0],
                 loggedUser: req.session.userId,
             });
         })
@@ -284,24 +287,67 @@ app.get("/friend-status/:selection", (req, res) => {
 });
 
 app.post("/friend-status/:selection", (req, res) => {
-            db.addUserRelationship(
-                req.session.userId,
-                req.params.selection,
-                req.body.boolean
-            )
-                .then(({ rows }) => {
-                    console.log(" friend-status ROWS", rows);
-                    res.json({ data: rows[0] });
-                })
-                .catch((err) => console.log(err));
+    console.log("BOOLEAN", req.body);
+    if (req.body.boolean) {
+        db.deleteUserRelationship(req.session.userId, req.params.selection)
+            .then(() => {
+                db.addUserRelationship(
+                    req.session.userId,
+                    req.params.selection,
+                    req.body.boolean
+                )
+                    .then(({ rows }) => {
+                        console.log(" friend-status ROWS", rows);
+                        res.json({ data: rows[0] });
+                    })
+                    .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
+    } else {
+        db.addUserRelationship(
+            req.session.userId,
+            req.params.selection,
+            req.body.boolean
+        )
+            .then(({ rows }) => {
+                console.log(" friend-status ROWS", rows);
+                res.json({ data: rows[0] });
+            })
+            .catch((err) => console.log(err));
+    }
 });
 
 app.post("/friend-status-delete", (req, res) => {
     console.log("FRIEND STATUS DELETE BODY", req.body);
-    db.deleteUserRelationship(req.session.userId, req.body.otherUserId)
+    db.deleteUserRelationship(
+        req.session.userId,
+        req.body.otherUserId || req.body.arg
+    )
         .then(({ rows }) => {
             console.log("DELETING FRIEND STATUS DONE", rows);
-             res.json({ data: rows });
+            res.json({ data: rows });
+        })
+        .catch((err) => console.log(err));
+});
+
+app.get("/get-friends", (req, res) => {
+    db.getFriendsStatus(req.session.userId)
+        .then(({ rows }) => {
+            console.log(" friend-status ROWS", rows);
+            res.json({
+                data: rows,
+            });
+        })
+        .catch((err) => console.log(err));
+});
+
+app.get("/get-pending-friends", (req, res) => {
+    db.getFriendsStatus(req.session.userId)
+        .then(({ rows }) => {
+            console.log(" friend-status ROWS", rows);
+            res.json({
+                data: rows,
+            });
         })
         .catch((err) => console.log(err));
 });

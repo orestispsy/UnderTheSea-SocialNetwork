@@ -38,6 +38,14 @@ export default class Login extends React.Component {
         );
     }
 
+    handleErrorMsg(e) {
+        this.setState(
+            {
+                error: false,
+            }
+        );
+    }
+
     render() {
         return (
             <div className="regForm">
@@ -48,6 +56,7 @@ export default class Login extends React.Component {
                     name="email"
                     placeholder="Email"
                     onChange={(e) => this.handleChange(e)}
+                    onClick={() => this.handleErrorMsg()}
                 />
                 <span>Password</span>
                 <input
@@ -55,19 +64,19 @@ export default class Login extends React.Component {
                     placeholder="Password"
                     type="password"
                     onChange={(e) => this.handleChange(e)}
+                    onClick={() => this.handleErrorMsg()}
                 />
                 {this.state.error && (
                     <p className="error">Oups! Something Went Wrong.</p>
                 )}
                 <button onClick={() => this.handleClick()}>Submit</button>
-               
-                <Link to="/reset/start" className="links" >
+
+                <Link to="/reset/start" className="links">
                     Reset Password
                 </Link>
                 <Link to="/" className="links">
                     Back
                 </Link>
-               
             </div>
         );
     }
