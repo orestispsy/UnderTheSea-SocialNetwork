@@ -26,7 +26,7 @@ export default function FriendButton({ otherUserId }) {
                     setButtonText("Accept Friend Request");
                     setBoolean(true);
                 }
-            } else if (data.data.accepted) {
+            } else {
                 setButtonText("Unfriend");
             }
         });

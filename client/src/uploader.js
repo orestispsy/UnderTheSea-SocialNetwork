@@ -6,19 +6,17 @@ export default class Uploader extends Component {
         super(props);
         this.state = {
             error: false,
-            file:null
+            file: null,
         };
 
-    console.log("PROPS IN UPLOADER", props);
+        console.log("PROPS IN UPLOADER", props);
     }
-
 
     componentDidMount() {
         console.log("uploader mounted!");
     }
 
     handleClick() {
-       
         const formData = new FormData();
         formData.append("file", this.state.file);
         axios
@@ -26,7 +24,7 @@ export default class Uploader extends Component {
             .then(({ data }) => {
                 console.log("DATA", data);
                 if (data) {
-                    this.props.picUpdate(data.data.img_url)
+                    this.props.picUpdate(data.data.img_url);
                 } else {
                     console.log("data fail");
                     this.setState({
@@ -59,7 +57,6 @@ export default class Uploader extends Component {
                     <div
                         className="X"
                         onClick={() => this.props.toggleUploader()}
-                    
                     >
                         X
                     </div>
