@@ -4,6 +4,11 @@ const compression = require("compression");
 const path = require("path");
 const db = require("./utils/db");
 const ses = require("./ses");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
 
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -16,12 +21,24 @@ const { hash, compare } = require("./utils/bc");
 
 const cookieSession = require("cookie-session");
 
-app.use(
-    cookieSession({
-        secret: `Hands 0FF ! This one is #dangerous to taz.`,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+// app.use(
+//     cookieSession({
+//         secret: `Hands 0FF ! This one is #dangerous to taz.`,
+//         maxAge: 1000 * 60 * 60 * 24 * 14,
+//     })
+// );
+
+//socket.io cookie session intergration//
+const cookieSessionMiddleware = cookieSession({
+    secret: `Hands 0FF ! This one is #dangerous to taz.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+//socket.io cookiesession intergration//
 
 app.use(compression());
 
@@ -366,8 +383,47 @@ app.get("*", function (req, res) {
     }
 });
 
-var server = app.listen(process.env.PORT || 3001, () =>
+server.listen(process.env.PORT || 3001, () =>
     console.log(
         `🟢 Listening Port ${server.address().port} ... ~ SocialNetwork ~`
     )
 );
+
+io.on("connection", function (socket) {
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+
+    db.getChatMsgs()
+        .then(({ rows }) => {
+            console.log(" chat-messages ROWS", rows);
+            socket.emit("chatMessages", rows);
+        })
+        .catch((err) => console.log(err));
+
+    socket.on("A CHAT MSG", (msg) => {
+        db.addChatMsg(userId, msg)
+            .then(({ rows }) => {
+                console.log(" A CHAT MSG", rows);
+                socket.emit("chatMessage", rows);
+            })
+            .catch((err) => console.log(err));
+    });
+
+    console.log("socket userId", userId);
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    socket.on("disconnect", function () {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    io.emit("trying to talk to everyone", {
+        userId,
+    });
+
+    socket.emit("welcome", {
+        message: "Welome. It is nice to see you",
+    });
+});

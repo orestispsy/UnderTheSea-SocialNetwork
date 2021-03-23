@@ -7,6 +7,7 @@ import OtherProfile from "./otherProfile";
 import FindPeople from "./findPeople";
 import Friends from "./friends";
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import Chat from "./chat";
 
 export default class App extends Component {
     constructor(props) {
@@ -92,11 +93,16 @@ export default class App extends Component {
                     <div className="appBar">
                         <div className="logo">Under The Surface </div>
                         <div className="appBar">
+                            <Link to="/chat">
+                                <div className="chatBar"></div>
+                            </Link>
                             <Link
                                 to="/friends"
                                 onClick={(arg) => this.showProfile(false)}
                             >
-                                <div className="friendsBar"></div>
+                                <div className="friendsBar">
+                                    <div ></div>
+                                </div>
                             </Link>
                             <Link
                                 to="/user"
@@ -150,6 +156,8 @@ export default class App extends Component {
                             />
                         )}
                     />
+
+                    <Route path="/chat/" render={(props) => <Chat />} />
 
                     {this.state.profileIsVisible && (
                         <Route

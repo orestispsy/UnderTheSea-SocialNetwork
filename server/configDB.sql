@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS chatroom;
 DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS secrets;
@@ -24,4 +25,12 @@ CREATE TABLE secrets (
     id SERIAL PRIMARY KEY,
     sender_id INT REFERENCES users(id) NOT NULL,
     recipient_id INT REFERENCES users(id) NOT NULL,
-    accepted BOOLEAN DEFAULT false );
+    accepted BOOLEAN DEFAULT false 
+);
+
+ CREATE TABLE chatroom(
+    id SERIAL PRIMARY KEY,
+    msg_sender_id INT REFERENCES users(id) NOT NULL,
+    chat_msg TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
