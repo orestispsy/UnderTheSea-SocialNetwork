@@ -405,9 +405,13 @@ io.on("connection", function (socket) {
 
     socket.on("A CHAT MSG", (msg) => {
         db.addChatMsg(userId, msg)
-            .then(({ rows }) => {
-                console.log(" A CHAT MSG", rows);
-                socket.emit("chatMessage", rows);
+            .then(() => {
+                db.getChatMsgs()
+                    .then(({ rows }) => {
+                        console.log(" chat-messages ROWS IN MSG", rows);
+                        io.emit("chatMessage", rows[0]);
+                    })
+                    .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
     });

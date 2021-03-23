@@ -48,18 +48,17 @@ export default function (state = {}, action) {
         };
     }
     if (action.type == "CHAT_MESSAGES") {
-        console.log("chatmsgs action", action)
+        console.log("chatmsgs action", action);
         nextState = {
             ...state,
-            chatMessages: action.msgs
+            chatMessages: action.msgs.reverse(),
         };
     }
     if (action.type == "CHAT_MESSAGE") {
         console.log("CHAT MESSAGE in action", action.msg);
         nextState = {
             ...state,
-            chatMessages: state.chatMessages.concat(action.msg)
-           
+            chatMessages: state.chatMessages.concat(action.msg),
         };
     }
     console.log("NEXT State", nextState);

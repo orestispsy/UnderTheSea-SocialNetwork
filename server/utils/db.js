@@ -152,9 +152,7 @@ module.exports.getFriendsStatus = (user) => {
     return db.query(q, params);
 };
 
-module.exports.addChatMsg = (
-    msg_sender_id,
-    chat_msg ) => {
+module.exports.addChatMsg = (msg_sender_id, chat_msg) => {
     const q = `
         INSERT INTO chatroom (msg_sender_id, chat_msg)
         VALUES ($1, $2)
@@ -170,9 +168,8 @@ module.exports.getChatMsgs = () => {
         FROM chatroom
         JOIN users
         ON (users.id = msg_sender_id)
-        ORDER BY chatroom.id DESC
+        ORDER BY chatroom.created_at DESC
         LIMIT 10;
     `;
     return db.query(q);
 };
-

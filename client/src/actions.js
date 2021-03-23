@@ -34,13 +34,13 @@ export async function unFriend(arg) {
 export async function chatMessages(arg) {
     return {
         type: "CHAT_MESSAGES",
-        msgs: arg
+        msgs: arg,
     };
 }
 
 export async function chatMessage(arg) {
     return {
         type: "CHAT_MESSAGE",
-        msg:arg
+        msg: arg,
     };
 }
