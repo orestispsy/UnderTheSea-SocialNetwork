@@ -30,3 +30,17 @@ export async function unFriend(arg) {
         recipientId: data.data[0].recipient_id,
     };
 }
+
+export async function chatMessages(arg) {
+    return {
+        type: "CHAT_MESSAGES",
+        msgs: arg
+    };
+}
+
+export async function chatMessage(arg) {
+    return {
+        type: "CHAT_MESSAGE",
+        msg:arg
+    };
+}
