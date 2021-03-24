@@ -83,7 +83,7 @@ export default function FindPeople({ showProfile }) {
                                         <Link to={`/user/${data.id}`}>
                                             <img
                                                 alt={`${data.firstname} ${data.lastname}`}
-                                                src={data.img_url}
+                                                src={data.img_url || "default.jpg"}
                                                 onClick={(arg) =>
                                                     showProfile(true)
                                                 }

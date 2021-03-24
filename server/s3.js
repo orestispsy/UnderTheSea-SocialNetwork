@@ -14,7 +14,7 @@ const s3 = new aws.S3({
 });
 
 exports.upload = (req, res, next) => {
-    console.log("multer req file",req.file)
+    console.log("multer req file", req.file);
     if (!req.file) {
         console.log("multer fail");
         return res.sendStatus(500);
@@ -34,6 +34,21 @@ exports.upload = (req, res, next) => {
             next();
             fs.unlink(path, () => {});
         })
+        .catch(function (err) {
+            console.log(err);
+            res.sendStatus(500);
+        });
+};
+
+exports.delete = (arg, req, res) => {
+    console.log("arg s3 delete", arg);
+
+    s3.deleteObject({
+        Bucket: "zero-psy-sp",
+        Key: arg,
+    })
+        .promise()
+        .then(function () {})
         .catch(function (err) {
             console.log(err);
             res.sendStatus(500);

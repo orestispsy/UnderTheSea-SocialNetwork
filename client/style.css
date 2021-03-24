@@ -402,15 +402,26 @@ textarea {
     overflow-y: visible;
 }
 
-.logout {
+.logoutBack {
+    box-shadow: inset 0 0 0 100vh rgba(255, 255, 255, 0.233);
     position: fixed;
     bottom: 10px;
-    right: 15px;
+    right: 10px;
+    border-radius: 50%;
+}
+
+.logout {
     font-size: 30px;
     color: white;
     cursor: pointer;
     text-shadow: -0 0 5px rgba(0, 0, 0, 0.7), 0 -0 5px rgba(0, 0, 0, 0.7),
         -0 -0 5px rgba(0, 0, 0, 0.7), -0 -0 5px rgba(0, 0, 0, 0.7);
+    background-image: url("exit.png");
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    background-size: 80%;
+    background-position-y: 50%;
 }
 
 .logout:hover {
@@ -828,6 +839,66 @@ textarea {
     font-size: 18.5px;
     text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
         -0 -0 5px black;
+}
+
+.delete {
+    background-image: url("starfish.png");
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    cursor: pointer;
+}
+
+.deleteContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 80px;
+    text-shadow: -0 0 5px white, 0 -0 5px white, -0 -0 5px white,
+        -0 -0 5px white;
+    color: black;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.deleteContainer p {
+    color: red;
+    cursor: pointer;
+    margin: 10px;
+    text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
+        -0 -0 5px black;
+}
+
+.deleteContainer a {
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
+        -0 -0 5px black;
+}
+
+.deleteContainer span {
+    padding: 20px;
+    font-size: 60px;
+    color: lime;
+    text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
+        -0 -0 5px black;
+}
+
+.deleteInfo {
+    margin: 10px;
+    width: 40vh;
+    font-size: 20px;
+    text-shadow: -0 0 5px black, 0 -0 5px black, -0 -0 5px black,
+        -0 -0 5px black;
+    color: white;
 }
 
 /* font-family: 'Black Ops One', cursive;

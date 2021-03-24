@@ -173,3 +173,53 @@ module.exports.getChatMsgs = () => {
     `;
     return db.query(q);
 };
+
+module.exports.deleteUser = (userId) => {
+    const q = `
+        DELETE FROM users
+        WHERE id = $1
+    `;
+    const params = [userId];
+    return db.query(q, params);
+};
+
+module.exports.deleteUser = (userId) => {
+    const q = `
+        DELETE FROM users
+        WHERE id = $1
+
+    `;
+    const params = [userId];
+    return db.query(q, params);
+};
+
+module.exports.deleteUserRelationships = (userId) => {
+    const q = `
+        DELETE FROM friendships 
+        WHERE sender_id = $1 OR recipient_id = $1
+
+    `;
+    const params = [userId];
+    return db.query(q, params);
+};
+
+module.exports.deleteUserChatMsgs = (userId) => {
+    const q = `
+        DELETE FROM chatroom
+        WHERE msg_sender_id = $1
+    `;
+    const params = [userId];
+    return db.query(q, params);
+};
+
+
+module.exports.deleteUserSecrets = (email) => {
+    const q = `
+        DELETE FROM secrets
+        WHERE email = $1
+
+    `;
+
+    const params = [email];
+    return db.query(q, params);
+};
