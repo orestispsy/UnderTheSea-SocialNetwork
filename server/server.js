@@ -216,14 +216,27 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { filename } = req.file;
     console.log(filename);
     if (req.file) {
-        db.addImage(req.session.userId, s3Url + filename)
+        db.getUser(req.session.userId)
             .then(({ rows }) => {
-                console.log("uuploader", rows);
-                res.json({ data: rows[0] });
+                if (rows[0].img_url) {
+                    const file2delete = rows[0].img_url.replace(
+                        "https://zero-psy-sp.s3.amazonaws.com/",
+                        ""
+                    );
+                    console.log("file2delete", file2delete);
+                    s3.delete(file2delete);
+                    console.log("pic delete done");
+                }
+                db.addImage(req.session.userId, s3Url + filename)
+                    .then(({ rows }) => {
+                        console.log("uuploader", rows);
+                        res.json({ data: rows[0] });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch((err) => console.log(err));
     } else {
         res.json({ data: null });
     }
@@ -365,6 +378,48 @@ app.get("/get-pending-friends", (req, res) => {
             res.json({
                 data: rows,
             });
+        })
+        .catch((err) => console.log(err));
+});
+
+app.get("/deleteAccount", (req, res) => {
+    db.getUser(req.session.userId)
+        .then(({ rows }) => {
+            console.log("GETTING USER ABOUT TO DELETE INFOS", rows);
+            if (rows[0].img_url) {
+                const file2delete = rows[0].img_url.replace(
+                    "https://zero-psy-sp.s3.amazonaws.com/",
+                    ""
+                );
+                console.log("file2delete", file2delete);
+                s3.delete(file2delete);
+                console.log("pic delete done");
+            }
+            db.deleteUserSecrets(rows[0].email)
+                .then(() => {
+                    console.log("user secrets deleted")
+                    db.deleteUserChatMsgs(req.session.userId)
+                        .then(() => {
+                            console.log("user chat messages deleted")
+                            db.deleteUserRelationships(req.session.userId)
+                                .then(() => {
+                                    console.log("user friend relations deleted")
+                                    db.deleteUser(req.session.userId)
+                                        .then(() => {
+                                            console.log(
+                                                " USER DOESN'T EXIST ANYMORE"   
+                                            );
+                                                        req.session = null;
+                                                        res.redirect("/");
+                                        })
+                                        .catch((err) => console.log(err));
+                                })
+                                .catch((err) => console.log(err));
+                        })
+                        .catch((err) => console.log(err));
+                })
+                .catch((err) => console.log(err));
+
         })
         .catch((err) => console.log(err));
 });

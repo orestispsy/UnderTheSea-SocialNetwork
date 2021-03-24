@@ -8,6 +8,7 @@ import FindPeople from "./findPeople";
 import Friends from "./friends";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import Chat from "./chat";
+import DeleteAccount from "./deleteAccount";
 
 export default class App extends Component {
     constructor(props) {
@@ -48,6 +49,21 @@ export default class App extends Component {
         });
     }
 
+    removeAllData() {
+        axios
+            .get("/deleteAccount")
+            .then(() => {
+                console.log("done")
+                location.reload();
+            })
+            .catch((err) => {
+                this.setState({
+                    error: true,
+                });
+                console.log("error", err);
+            });
+    }
+
     logOut() {
         axios
             .get("/logout")
@@ -58,7 +74,7 @@ export default class App extends Component {
                 this.setState({
                     error: true,
                 });
-                console.log("err in axios in submitting BIO ", err);
+                console.log("error", err);
             });
     }
 
@@ -101,7 +117,7 @@ export default class App extends Component {
                                 onClick={(arg) => this.showProfile(false)}
                             >
                                 <div className="friendsBar">
-                                    <div ></div>
+                                    <div></div>
                                 </div>
                             </Link>
                             <Link
@@ -185,10 +201,24 @@ export default class App extends Component {
                             />
                         )}
                     />
-
-                    <div className="logout" onClick={() => this.logOut()}>
-                        <span>logout</span>
+                    <Link to="/delete">
+                        <div className="delete"></div>
+                    </Link>
+                    <div className="logoutBack">
+                        <div
+                            className="logout"
+                            onClick={() => this.logOut()}
+                        ></div>
                     </div>
+
+                    <Route
+                        path="/delete/"
+                        render={(props) => (
+                            <DeleteAccount
+                                removeAllData={() => this.removeAllData()}
+                            />
+                        )}
+                    />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             toggleUploader={() => this.toggleUploader()}

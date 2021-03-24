@@ -47,7 +47,10 @@ export default class otherProfile extends Component {
                 <div className="profile-user">
                     <img
                         className="profile-user-pic"
-                        src={this.state.imageUrl}
+                        src={
+                            this.state.imageUrl ||
+                            "https://cdn.dribbble.com/users/4157515/screenshots/8382071/nope_4x.png"
+                        }
                         alt={`${this.state.firstname} ${this.state.lastname}`}
                     />
 
@@ -56,7 +59,7 @@ export default class otherProfile extends Component {
                             <h2>{this.state.bio}</h2>
                         </div>
                     )}
-                    <FriendButton otherUserId={this.props.match.params.id}/>
+                    <FriendButton otherUserId={this.props.match.params.id} />
                 </div>
             </div>
         );
